@@ -1,2 +1,3 @@
 # IM3
 
+Genre-Datastory ist ein nicht-kommerzielles Studierendenprojekt im Modul «Interaktive Medien 3». Wir entwickeln eine interaktive Onepager-Datastory. Sie zeigt, wie sich die Beliebtheit von Filmgenres (Action, Animation, Horror, Romance, Science Fiction) auf dem US-amerikanischen Filmmarkt von 1967 bis 2025 verändert hat. Über die TMDB-API holen wir Filme nach Genre, Erscheinungsdatum und Popularität, fassen sie pro Jahr zusammen und stellen sie in interaktiven Grafiken dar. Ziel ist es, merkbare Anstiege der Genrepopularität zu erkennen und mit möglichen Auslöserfilmen zu verbinden.
