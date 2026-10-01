@@ -8,7 +8,7 @@ if (PHP_SAPI !== 'cli') {
 $host = getenv('IM3_DB_HOST');
 $username = getenv('IM3_DB_USER');
 $password = getenv('IM3_DB_PASSWORD');
-$database = getenv('IM3_DB_NAME') ?: 'uswosonis_im3film';
+$database = getenv('IM3_DB_NAME') ?: 'uwosonis_im3film';
 
 if ($host === false || $host === '' || $username === false || $username === '' || $password === false) {
     throw new RuntimeException('Bitte IM3_DB_HOST, IM3_DB_USER und IM3_DB_PASSWORD setzen.');

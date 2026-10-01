@@ -4,7 +4,7 @@ Genre-Datastory ist ein nicht-kommerzielles Studierendenprojekt im Modul «Inter
 
 ## Filme in MariaDB laden
 
-Zuerst `02_Back-End/schema.sql` in der bereits angelegten Datenbank ausführen. Danach `02_Back-End/import.php` mit PHP CLI starten. Die Zugangsdaten als Umgebungsvariablen setzen; der Datenbankname ist standardmässig `uswosonis_im3film`:
+Zuerst `02_Back-End/schema.sql` in der bereits angelegten Datenbank ausführen. Danach `02_Back-End/import.php` mit PHP CLI starten. Die Zugangsdaten als Umgebungsvariablen setzen; der Datenbankname ist standardmässig `uwosonis_im3film`:
 
 ```sh
 IM3_DB_HOST=localhost IM3_DB_USER=dein-benutzer IM3_DB_PASSWORD='dein-passwort' php 02_Back-End/import.php
