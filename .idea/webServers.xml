@@ -2,7 +2,7 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="1af97c03-47bd-4f86-ae52-9239ea82c2ed" name="IM3 Geraldin Hosting" url="http://sl203.web.hostpoint.ch">
+      <webServer id="1af97c03-47bd-4f86-ae52-9239ea82c2ed" name="IM3 Geraldin Hosting" url="im3-movies-uwosonis.myhostpoint.ch">
         <fileTransfer host="sl203.web.hostpoint.ch" port="21">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />

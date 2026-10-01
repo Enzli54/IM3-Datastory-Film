@@ -1,9 +1,8 @@
 <?php
-// index.php – Kontrollansicht: zeigt das Resultat von transform.php als JSON an.
-// Prüfwerkzeug für uns, nicht der spätere Endpunkt für Chart.js.
+// index.php – JSON-Kontrollansicht der Extract- und Transform-Ergebnisse.
 header('Content-Type: application/json; charset=utf-8');
 
-$result = include __DIR__ . '/transform.php';
+$result = require __DIR__ . '/transform.php';
 
 echo json_encode(
     $result,

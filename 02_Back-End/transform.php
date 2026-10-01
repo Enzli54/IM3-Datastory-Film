@@ -39,8 +39,23 @@ foreach ($rawFilms as $film) {
     $votes = $film['vote_count'] ?? null;
     $title = trim((string) ($film['titel'] ?? ''));
     $genres = array_values(array_intersect($film['genres'] ?? [], GENRES));
+    $dateString = $film['datum'] ?? null;
+    $date = is_string($dateString)
+        ? DateTimeImmutable::createFromFormat('!d.m.Y', $dateString)
+        : false;
+    $dateErrors = DateTimeImmutable::getLastErrors();
 
-    if (!is_numeric($year) || !is_numeric($votes) || $title === '' || count($genres) === 0) {
+    if (!is_numeric($id)
+        || !is_numeric($year)
+        || !is_numeric($votes)
+        || !is_numeric($film['popularity'] ?? null)
+        || !is_numeric($film['vote_average'] ?? null)
+        || $title === ''
+        || count($genres) === 0
+        || $date === false
+        || ($dateErrors !== false && ($dateErrors['warning_count'] > 0 || $dateErrors['error_count'] > 0))
+        || $date->format('d.m.Y') !== $dateString
+    ) {
         $audit['invalid_values']++;
         continue;
     }
@@ -60,10 +75,14 @@ foreach ($rawFilms as $film) {
     }
 
     $films[] = [
-        'title'  => $title,
-        'year'   => $year,
+        'tmdb_id' => (int) $id,
+        'title' => $title,
+        'release_date' => $date->format('Y-m-d'),
+        'year' => $year,
         'genres' => $genres,
-        'votes'  => $votes,
+        'popularity' => $film['popularity'],
+        'votes' => $votes,
+        'vote_average' => $film['vote_average'],
     ];
 }
 $audit['output_films'] = count($films);
@@ -108,5 +127,6 @@ $audit['output_rows'] = count($rows);
 
 return [
     'audit' => $audit,
+    'films' => $films,
     'rows'  => $rows,
 ];
