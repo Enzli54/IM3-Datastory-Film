@@ -4,10 +4,11 @@ Genre-Datastory ist ein nicht-kommerzielles Studierendenprojekt im Modul «Inter
 
 ## Filme in MariaDB laden
 
-Zuerst `02_Back-End/schema.sql` in der bereits angelegten Datenbank ausführen. Danach `02_Back-End/import.php` mit PHP CLI starten. Die Zugangsdaten als Umgebungsvariablen setzen; der Datenbankname ist standardmässig `uwosonis_im3film`:
+Zuerst `02_Back-End/schema.sql` in der bereits angelegten Datenbank ausführen. Dann `02_Back-End/config.example.php` als `02_Back-End/config.php` kopieren und Host, Port, Benutzername sowie Passwort eintragen. Die lokale `config.php` wird von Git ignoriert, damit Zugangsdaten nicht ins Repository gelangen.
 
 ```sh
-IM3_DB_HOST=localhost IM3_DB_USER=dein-benutzer IM3_DB_PASSWORD='dein-passwort' php 02_Back-End/import.php
+cp 02_Back-End/config.example.php 02_Back-End/config.php
+php 02_Back-End/import.php
 ```
 
-Optional kann der Datenbankname mit `IM3_DB_NAME` überschrieben werden. Der Import kann wiederholt werden: Filme mit vorhandener TMDB-ID werden aktualisiert.
+Der Datenbankname ist standardmässig `uwosonis_im3film`. Der Import kann wiederholt werden: Filme mit vorhandener TMDB-ID werden aktualisiert.

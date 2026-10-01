@@ -5,17 +5,41 @@ if (PHP_SAPI !== 'cli') {
     throw new RuntimeException('Dieses Skript muss über die Kommandozeile gestartet werden.');
 }
 
-$host = getenv('IM3_DB_HOST');
-$username = getenv('IM3_DB_USER');
-$password = getenv('IM3_DB_PASSWORD');
-$database = getenv('IM3_DB_NAME') ?: 'uwosonis_im3film';
-
-if ($host === false || $host === '' || $username === false || $username === '' || $password === false) {
-    throw new RuntimeException('Bitte IM3_DB_HOST, IM3_DB_USER und IM3_DB_PASSWORD setzen.');
+$configPath = __DIR__ . '/config.php';
+if (!is_file($configPath)) {
+    throw new RuntimeException('config.php fehlt. Erstelle sie anhand von config.example.php.');
 }
 
-$dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8mb4', $host, $database);
-$pdo = new PDO($dsn, $username, $password, [
+$config = require $configPath;
+if (!is_array($config)) {
+    throw new RuntimeException('config.php muss ein Array zurückgeben.');
+}
+
+foreach (['host', 'database', 'username', 'password', 'port'] as $key) {
+    if (!array_key_exists($key, $config)) {
+        throw new RuntimeException("Der Datenbankeintrag '$key' fehlt in config.php.");
+    }
+}
+
+if (!is_string($config['host'])
+    || $config['host'] === ''
+    || !is_string($config['database'])
+    || $config['database'] === ''
+    || !is_string($config['username'])
+    || $config['username'] === ''
+    || !is_string($config['password'])
+    || !is_int($config['port'])
+) {
+    throw new RuntimeException('Die Datenbankangaben in config.php sind ungültig.');
+}
+
+$dsn = sprintf(
+    'mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4',
+    $config['host'],
+    $config['port'],
+    $config['database']
+);
+$pdo = new PDO($dsn, $config['username'], $config['password'], [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_EMULATE_PREPARES => false,
 ]);
