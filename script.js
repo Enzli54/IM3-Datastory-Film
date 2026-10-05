@@ -15,7 +15,7 @@ try {
     console.log(filmDaten);
 
     // Beim Start direkt die 1990er anzeigen
-    updateChart(1990);
+    updateChart(1970);
 
 } catch (error) {
     console.error("Fetch fehlgeschlagen:", error);
@@ -99,11 +99,13 @@ function updateChart(decade) {
                 ]
             },
 
+
             options: {
-                responsive: true,
+                responsive:true,
+                indexAxis: 'y',
 
                 scales: {
-                    y: {
+                    x: {
                         beginAtZero: true,
                         title: {
                             display: true,
@@ -111,7 +113,7 @@ function updateChart(decade) {
                         }
                     },
 
-                    x: {
+                    y: {
                         title: {
                             display: true,
                             text: "Genre"
