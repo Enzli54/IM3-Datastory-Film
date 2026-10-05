@@ -50,6 +50,10 @@ try {
                 vote_average
             FROM films';
 
+    // Die Filter sind optional. Der Wert kommt nie direkt in den SQL-Text,
+    // sondern als Platzhalter – ohne Filter bleibt $params eine leere Liste.
+    $where = [];
+    $params = [];
 
     if ($genre !== '') {
         // genres ist ein Text wie "Action, Horror", deshalb LIKE statt =.
