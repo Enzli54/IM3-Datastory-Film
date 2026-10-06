@@ -1,8 +1,21 @@
 let filmDaten = [];
-let chart;
+let chart;        // Balkendiagramm (Jahrzehnte)
+let genreChart;   // Liniendiagramm (Genres über die Jahre)
+
+const START_JAHR = 1967;
+const END_JAHR = 2025;
+
+// Farben für die Genres (werden der Reihe nach vergeben)
+const FARBEN = [
+    "#e6194b", "#3cb44b", "#4363d8", "#f58231", "#911eb4",
+    "#42d4f4", "#f032e6", "#9a6324", "#469990", "#800000",
+    "#808000", "#000075", "#bfef45", "#fabed4", "#a9a9a9"
+];
 
 
-// Daten vom Backend laden
+// =====================================================
+// Daten EINMAL vom Backend laden – beide Charts nutzen sie
+// =====================================================
 try {
     const response = await fetch("/02_Back-End/unload.php?type=rows");
 
@@ -14,13 +27,21 @@ try {
 
     console.log(filmDaten);
 
-    // Beim Start direkt die 1990er anzeigen
+    // Chart 1: Beim Start direkt die 1970er anzeigen
     updateChart(1970);
+
+    // Chart 2: Genre-Verlauf + Buttons
+    erstelleGenreChart(filmDaten);
+    erstelleGenreButtons();
 
 } catch (error) {
     console.error("Fetch fehlgeschlagen:", error);
 }
 
+
+// =====================================================
+// CHART 1: Filme nach Genre pro Jahrzehnt (Balken)
+// =====================================================
 
 // Listener für alle Jahrzehnt-Buttons
 const buttons = document.querySelectorAll("#jahrzehnte button");
@@ -101,7 +122,7 @@ function updateChart(decade) {
 
 
             options: {
-                responsive:true,
+                responsive: true,
                 indexAxis: 'y',
 
                 scales: {
@@ -123,6 +144,147 @@ function updateChart(decade) {
             }
         }
     );
+}
+
+
+// =====================================================
+// CHART 2: Filme pro Jahr (1967–2025), eine Linie pro Genre
+// =====================================================
+
+function erstelleGenreChart(daten) {
+
+    // x-Achse: alle Jahre von 1967 bis 2025
+    const jahre = [];
+    for (let jahr = START_JAHR; jahr <= END_JAHR; jahr++) {
+        jahre.push(jahr);
+    }
+
+    // Alle Genres herausfinden (alphabetisch sortiert)
+    const genres = [...new Set(daten.map(eintrag => eintrag.genre))].sort();
+
+    // Pro Genre ein Array mit einer 0 für jedes Jahr anlegen
+    const counts = {};
+    genres.forEach(genre => {
+        counts[genre] = new Array(jahre.length).fill(0);
+    });
+
+    // film_count an der richtigen Stelle eintragen
+    daten.forEach(eintrag => {
+        const jahr = Number(eintrag.year);
+        if (jahr < START_JAHR || jahr > END_JAHR) return;
+
+        const index = jahr - START_JAHR;
+        counts[eintrag.genre][index] += Number(eintrag.film_count);
+    });
+
+    // Ein Dataset (= eine Linie) pro Genre
+    const datasets = genres.map((genre, i) => {
+        const farbe = FARBEN[i % FARBEN.length];
+        return {
+            label: genre,
+            data: counts[genre],
+            borderColor: farbe,
+            backgroundColor: farbe,
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            tension: 0.25
+        };
+    });
+
+    genreChart = new Chart(
+        document.querySelector("#genreVerlauf"),
+        {
+            type: "line",
+
+            data: {
+                labels: jahre,
+                datasets: datasets
+            },
+
+            options: {
+                responsive: true,
+
+                // Tooltip zeigt alle Genres eines Jahres gleichzeitig
+                interaction: {
+                    mode: "index",
+                    intersect: false
+                },
+
+                plugins: {
+                    // Eigene Buttons ersetzen die Standard-Legende
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: `Filme pro Jahr nach Genre (${START_JAHR}–${END_JAHR})`
+                    }
+                },
+
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Jahr"
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: "Anzahl Filme"
+                        }
+                    }
+                }
+            }
+        }
+    );
+}
+
+
+// Für jedes Genre einen Button erzeugen
+function erstelleGenreButtons() {
+
+    const container = document.querySelector("#genreButtons");
+
+    genreChart.data.datasets.forEach((dataset, index) => {
+
+        const button = document.createElement("button");
+        button.textContent = dataset.label;
+        button.classList.add("genre-button", "aktiv");
+        button.style.setProperty("--genre-farbe", dataset.borderColor);
+
+        button.addEventListener("click", () => {
+
+            const sichtbar = genreChart.isDatasetVisible(index);
+            genreChart.setDatasetVisibility(index, !sichtbar);
+            button.classList.toggle("aktiv", !sichtbar);
+
+            genreChart.update();
+        });
+
+        container.appendChild(button);
+    });
+
+
+    // Zusätzlich: "Alle an" / "Alle aus"
+    document.querySelector("#alleAn")?.addEventListener("click", () => setzeAlle(true));
+    document.querySelector("#alleAus")?.addEventListener("click", () => setzeAlle(false));
+}
+
+
+function setzeAlle(sichtbar) {
+
+    genreChart.data.datasets.forEach((_, index) => {
+        genreChart.setDatasetVisibility(index, sichtbar);
+    });
+
+    document.querySelectorAll(".genre-button").forEach(button => {
+        button.classList.toggle("aktiv", sichtbar);
+    });
+
+    genreChart.update();
 }
 
 
