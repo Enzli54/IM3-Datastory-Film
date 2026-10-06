@@ -128,6 +128,7 @@ function updateChart(decade) {
                 scales: {
                     x: {
                         beginAtZero: true,
+                        max: 3000,
                         title: {
                             display: true,
                             text: "Anzahl Filme"
