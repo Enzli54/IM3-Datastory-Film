@@ -7,9 +7,7 @@ const END_JAHR = 2025;
 
 // Farben für die Genres (werden der Reihe nach vergeben)
 const FARBEN = [
-    "#e6194b", "#3cb44b", "#4363d8", "#f58231", "#911eb4",
-    "#42d4f4", "#f032e6", "#9a6324", "#469990", "#800000",
-    "#808000", "#000075", "#bfef45", "#fabed4", "#a9a9a9"
+    "#e6194b", "#3cb44b", "#4363d8", "#f58231", "#911eb4"
 ];
 
 
