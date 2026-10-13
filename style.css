@@ -96,25 +96,22 @@ section {
 /* 3. Tickets */
 .ticket-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(clamp(8rem, 15vw, 11rem), 1fr));
     gap: var(--ga-medium);
+    /* offenes Ticket wird höher, das Nachbar-Ticket bleibt oben */
+    align-items: start;
 }
 
-.ticket {
-    background: none;
-    border: none;
+/* <details>/<summary> öffnet und schliesst den Text ohne JavaScript */
+.ticket summary {
+    list-style: none; /* Standard-Pfeil entfernen */
+    &::-webkit-details-marker {
+        display: none; /* Pfeil in Safari entfernen */
+    }
     cursor: pointer;
     transition: transform 0.3s ease;
-    &:hover,
-    &[aria-expanded="true"] {
+    &:hover {
         transform: scale(1.05);
     }
-}
-
-/* Textblock nimmt die ganze Zeile ein und schiebt die Tickets danach nach unten */
-.ticket-text {
-    grid-column: 1 / -1;
-    margin-top: 0;
 }
 
 /* Buttons der Grafiken */
@@ -148,4 +145,11 @@ section {
 .chart {
     background-color: var(--light);
     padding: var(--ga-small);
+}
+
+/* ab Tablet-Breite: zwei Tickets nebeneinander */
+@media (min-width: 40rem) {
+    .ticket-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

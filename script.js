@@ -12,33 +12,6 @@ const FARBEN = [
 
 
 // =====================================================
-// TICKETS: Klick öffnet den Textblock direkt nach dem Ticket
-// (steht vor dem Laden der Daten, damit die Tickets sofort klickbar sind)
-// =====================================================
-const tickets = document.querySelectorAll(".ticket");
-
-tickets.forEach(ticket => {
-
-    ticket.addEventListener("click", () => {
-
-        const text = ticket.nextElementSibling;
-        const warOffen = !text.hidden;
-
-        // zuerst alle Textblöcke schliessen
-        tickets.forEach(andereTicket => {
-            andereTicket.nextElementSibling.hidden = true;
-            andereTicket.setAttribute("aria-expanded", "false");
-        });
-
-        // dann den angeklickten öffnen (oder zu lassen, wenn er schon offen war)
-        text.hidden = warOffen;
-        ticket.setAttribute("aria-expanded", !warOffen);
-    });
-
-});
-
-
-// =====================================================
 // Daten EINMAL vom Backend laden – beide Charts nutzen sie
 // =====================================================
 try {
