@@ -59,6 +59,10 @@ buttons.forEach(button => {
 
         const decade = Number(button.dataset.decade);
 
+        // nur der angeklickte Button bleibt aktiv
+        buttons.forEach(andererButton => andererButton.classList.remove("aktiv"));
+        button.classList.add("aktiv");
+
         updateChart(decade);
 
     });
