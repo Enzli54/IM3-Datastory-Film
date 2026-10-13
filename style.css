@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo&family=Oswald:wght@300&family=Roboto+Slab&display=swap');
+
+:root {
+    /*farben*/
+    --dark: #0D0D0D;
+    --accent: #8F2525;
+    --block: #F2CA99;
+    --light: #EADED2;
+
+    /*abstände (min, wachsend mit Bildschirmbreite, max)*/
+    --ga-small: clamp(0.5rem, 1vw, 0.75rem);
+    --ga-medium: clamp(1rem, 2vw, 1.5rem);
+    --ga-large: clamp(2rem, 6vw, 5rem);
+    --max-width: 60rem;
+
+    /*schriften*/
+    --f-title: 400 clamp(2.5rem, 7vw, 5.5rem)/110% 'Roboto Slab', serif;
+    --f-heading: 400 clamp(1.75rem, 4vw, 2.75rem)/120% 'Roboto Slab', serif;
+    --f-subtitle: 300 clamp(1.1rem, 2vw, 1.5rem)/140% 'Oswald', sans-serif;
+    --f-text: 400 clamp(1rem, 1.2vw, 1.125rem)/160% 'Archivo', sans-serif;
+}
+
+/*reset*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--light);
+    font: var(--f-text);
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+
+h1 {
+    font: var(--f-title);
+}
+
+h2, h3 {
+    font: var(--f-heading);
+}
+
+.subtitle {
+    font: var(--f-subtitle);
+    color: var(--block);
+    margin-bottom: var(--ga-medium);
+}
+
+/* 1. Landingpage: füllt den ganzen Bildschirm */
+.landing {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--ga-medium);
+    min-height: 100svh;
+    padding: var(--ga-large);
+    text-align: center;
+}
+
+/* Alle Sections gleich breit und zentriert */
+section {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--ga-large) var(--ga-medium);
+}
+
+.lead {
+    font: var(--f-subtitle);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+/* Beige Textblöcke */
+.text-block {
+    background-color: var(--block);
+    color: var(--dark);
+    padding: var(--ga-medium);
+    margin-top: var(--ga-medium);
+
+    h3 {
+        color: var(--accent);
+        margin-bottom: var(--ga-small);
+    }
+}
+
+/* 3. Tickets */
+.ticket-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(8rem, 15vw, 11rem), 1fr));
+    gap: var(--ga-medium);
+}
+
+.ticket {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    &:hover,
+    &[aria-expanded="true"] {
+        transform: scale(1.05);
+    }
+}
+
+/* Textblock nimmt die ganze Zeile ein und schiebt die Tickets danach nach unten */
+.ticket-text {
+    grid-column: 1 / -1;
+    margin-top: 0;
+}
+
+/* Buttons der Grafiken */
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ga-small);
+    margin-bottom: var(--ga-small);
+
+    button {
+        background: none;
+        color: var(--light);
+        border: 2px solid var(--accent);
+        padding: var(--ga-small) var(--ga-medium);
+        font: var(--f-subtitle);
+        cursor: pointer;
+        &:hover,
+        &.aktiv {
+            background-color: var(--accent);
+        }
+    }
+}
+
+/* Genre-Buttons in der Farbe ihrer Linie (--genre-farbe setzt script.js) */
+#genreButtons button.aktiv {
+    background-color: var(--genre-farbe);
+    border-color: var(--genre-farbe);
+}
+
+/* Heller Hintergrund, damit Achsen und Beschriftung von Chart.js lesbar sind */
+.chart {
+    background-color: var(--light);
+    padding: var(--ga-small);
+}

@@ -1,53 +1,137 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Filme nach Genre und Jahrzehnt</title>
-
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
-
-
 </head>
-
 <body>
-
-<header>
-    <h1>Die Website ist in Arbeit</h1>
-    <p>Hello World</p>
+<!-- 1. Landingpage -->
+<header class="landing">
+    <h1>Titel der Datastory</h1>
+    <p class="subtitle">Ein erklärender Untertitel, worum es in dieser Datastory geht</p>
 </header>
 
-<!-- Chart 1: Filme nach Genre pro Jahrzehnt -->
-<section>
+<main>
+    <!-- 2. Lead -->
+    <section class="lead">
+        <p>
+            Lead-Text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+            exercitation ullamco laboris.
+        </p>
+    </section>
 
-    <div id="jahrzehnte">
-        <button data-decade="1970">1970er</button>
-        <button data-decade="1980">1980er</button>
-        <button data-decade="1990">1990er</button>
-        <button data-decade="2000">2000er</button>
-        <button data-decade="2010">2010er</button>
-        <button data-decade="2020">2020er</button>
-    </div>
+    <!-- 3. Tickets: Genre-Merkmale -->
+    <section>
+        <h2>Genre-Merkmale</h2>
+        <p class="subtitle">Klicke auf ein Ticket</p>
+        <div class="ticket-grid">
+            <button class="ticket" aria-expanded="false">
+                <img src="03_assets/action_ticket.svg" alt="Action" />
+            </button>
+            <div class="ticket-text text-block" hidden>
+                <h3>Action</h3>
+                <p>Merkmale: Lorem ipsum dolor sit amet.</p>
+                <p>Bekannteste Filme: Film A, Film B, Film C</p>
+            </div>
 
-    <canvas id="verlauf"></canvas>
+            <button class="ticket" aria-expanded="false">
+                <img src="03_assets/animation_ticket.svg" alt="Animation" />
+            </button>
+            <div class="ticket-text text-block" hidden>
+                <h3>Animation</h3>
+                <p>Merkmale: Lorem ipsum dolor sit amet.</p>
+                <p>Bekannteste Filme: Film A, Film B, Film C</p>
+            </div>
 
-</section>
+            <button class="ticket" aria-expanded="false">
+                <img src="03_assets/horror_ticket.svg" alt="Horror" />
+            </button>
+            <div class="ticket-text text-block" hidden>
+                <h3>Horror</h3>
+                <p>Merkmale: Lorem ipsum dolor sit amet.</p>
+                <p>Bekannteste Filme: Film A, Film B, Film C</p>
+            </div>
 
-<!-- Chart 2: Filme pro Jahr, eine Linie pro Genre -->
-<section>
+            <button class="ticket" aria-expanded="false">
+                <img src="03_assets/romance_ticket.svg" alt="Romance" />
+            </button>
+            <div class="ticket-text text-block" hidden>
+                <h3>Romance</h3>
+                <p>Merkmale: Lorem ipsum dolor sit amet.</p>
+                <p>Bekannteste Filme: Film A, Film B, Film C</p>
+            </div>
 
-    <div>
-        <button id="alleAn">Alle an</button>
-        <button id="alleAus">Alle aus</button>
-    </div>
+            <button class="ticket" aria-expanded="false">
+                <img src="03_assets/science-fiction_ticket.svg" alt="Science-Fiction" />
+            </button>
+            <div class="ticket-text text-block" hidden>
+                <h3>Science-Fiction</h3>
+                <p>Merkmale: Lorem ipsum dolor sit amet.</p>
+                <p>Bekannteste Filme: Film A, Film B, Film C</p>
+            </div>
+        </div>
+    </section>
 
-    <!-- Die Genre-Buttons werden vom Script hier eingefügt -->
-    <div id="genreButtons"></div>
+    <!-- 4. Warum verändern sich die Genres? -->
+    <section>
+        <h2>Warum verändern sich alle Genres über die Jahre?</h2>
+        <p class="subtitle">Vom Farbfernsehen bis zum Streaming (1967–2025)</p>
+        <div class="text-block">
+            <p>
+                Platzhalter: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+        </div>
+    </section>
 
-    <canvas id="genreVerlauf"></canvas>
+    <!-- 5. Vergleichsgrafik pro Jahrzehnt -->
+    <section>
+        <h2>Genres im Jahrzehnt-Vergleich</h2>
+        <p class="subtitle">Untertitel zur Vergleichsgrafik</p>
+        <div id="jahrzehnte" class="button-group">
+            <button data-decade="1970">1970er</button>
+            <button data-decade="1980">1980er</button>
+            <button data-decade="1990">1990er</button>
+            <button data-decade="2000">2000er</button>
+            <button data-decade="2010">2010er</button>
+            <button data-decade="2020">2020er</button>
+        </div>
+        <div class="chart">
+            <canvas id="verlauf"></canvas>
+        </div>
+        <div class="text-block">
+            <p>
+                Längerer Text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
+        </div>
+    </section>
 
-</section>
+    <!-- 6. Entwicklungsgrafik 1967–2025 -->
+    <section>
+        <h2>Entwicklung der Genres 1967–2025</h2>
+        <p class="subtitle">Untertitel zur Entwicklungsgrafik</p>
+        <div class="button-group">
+            <button id="alleAn">Alle an</button>
+            <button id="alleAus">Alle aus</button>
+        </div>
+        <!-- Die Genre-Buttons erstellt script.js -->
+        <div id="genreButtons" class="button-group"></div>
+        <div class="chart">
+            <canvas id="genreVerlauf"></canvas>
+        </div>
+        <div class="text-block">
+            <p id="genreText">Platzhalter: Erklärung, wie die Grafik zu lesen ist.</p>
+        </div>
+    </section>
+</main>
 
+<!-- type="module" braucht es für await (siehe Cheatsheet API) -->
 <script src="script.js" type="module"></script>
-
 </body>
 </html>
