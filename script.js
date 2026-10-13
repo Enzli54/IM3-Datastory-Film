@@ -10,6 +10,17 @@ const FARBEN = [
     "#e6194b", "#3cb44b", "#4363d8", "#f58231", "#911eb4"
 ];
 
+// Farben direkt aus den CSS-Variablen lesen (so sind sie nur an einem Ort definiert)
+const css = getComputedStyle(document.documentElement);
+const AKZENT = css.getPropertyValue("--accent").trim();
+const DUNKEL = css.getPropertyValue("--dark").trim();
+
+// Gilt für alle Grafiken: Schrift und Raster in Schwarz,
+// Schriftart wie der Fliesstext (kommt über --f-text auf den body)
+Chart.defaults.color = DUNKEL;
+Chart.defaults.borderColor = DUNKEL + "55"; // "55" am Ende = ca. 33 % Deckkraft
+Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
+
 
 // =====================================================
 // Daten EINMAL vom Backend laden – beide Charts nutzen sie
@@ -126,7 +137,8 @@ function updateChart(decade) {
                 datasets: [
                     {
                         label: `Filme nach Genre – ${decade}er`,
-                        data: values
+                        data: values,
+                        backgroundColor: AKZENT
                     }
                 ]
             },
@@ -135,6 +147,13 @@ function updateChart(decade) {
             options: {
                 responsive: true,
                 indexAxis: 'y',
+
+                // Titel-Kasten über der Grafik ausblenden
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
 
                 scales: {
                     x: {
@@ -232,10 +251,6 @@ function erstelleGenreChart(daten) {
                     // Eigene Buttons ersetzen die Standard-Legende
                     legend: {
                         display: false
-                    },
-                    title: {
-                        display: true,
-                        text: `Filme pro Jahr nach Genre (${START_JAHR}–${END_JAHR})`
                     }
                 },
 
@@ -248,6 +263,7 @@ function erstelleGenreChart(daten) {
                     },
                     y: {
                         beginAtZero: true,
+                        max: 350, // Achse bleibt fix, auch wenn nur ein Genre gezeigt wird
                         title: {
                             display: true,
                             text: "Anzahl Filme"
@@ -260,7 +276,7 @@ function erstelleGenreChart(daten) {
 }
 
 
-// Für jedes Genre einen Button erzeugen
+// Für jedes Genre einen Button erzeugen (hinter den "Alle"-Button aus dem HTML)
 function erstelleGenreButtons() {
 
     const container = document.querySelector("#genreButtons");
@@ -268,43 +284,44 @@ function erstelleGenreButtons() {
         throw new Error('Kein <div id="genreButtons"> im HTML gefunden');
     }
 
-    genreChart.data.datasets.forEach((dataset, index) => {
+    genreChart.data.datasets.forEach(dataset => {
 
         const button = document.createElement("button");
         button.textContent = dataset.label;
-        button.classList.add("genre-button", "aktiv");
+        button.dataset.genre = dataset.label;
         button.style.setProperty("--genre-farbe", dataset.borderColor);
-
-        button.addEventListener("click", () => {
-
-            const sichtbar = genreChart.isDatasetVisible(index);
-            genreChart.setDatasetVisibility(index, !sichtbar);
-            button.classList.toggle("aktiv", !sichtbar);
-
-            genreChart.update();
-        });
 
         container.appendChild(button);
     });
 
-
-    // Zusätzlich: "Alle an" / "Alle aus"
-    document.querySelector("#alleAn")?.addEventListener("click", () => setzeAlle(true));
-    document.querySelector("#alleAus")?.addEventListener("click", () => setzeAlle(false));
+    // Alle Buttons (inkl. "Alle") reagieren gleich auf einen Klick
+    container.querySelectorAll("button").forEach(button => {
+        button.addEventListener("click", () => zeigeGenre(button));
+    });
 }
 
 
-function setzeAlle(sichtbar) {
+// Zeigt "Alle" oder ein einzelnes Genre: Button, Linien und Text
+function zeigeGenre(button) {
 
-    genreChart.data.datasets.forEach((_, index) => {
-        genreChart.setDatasetVisibility(index, sichtbar);
+    const genre = button.dataset.genre;
+
+    // 1. nur der angeklickte Button ist aktiv
+    document.querySelectorAll("#genreButtons button").forEach(andererButton => {
+        andererButton.classList.remove("aktiv");
     });
+    button.classList.add("aktiv");
 
-    document.querySelectorAll(".genre-button").forEach(button => {
-        button.classList.toggle("aktiv", sichtbar);
+    // 2. bei "Alle" alle Linien zeigen, sonst nur die des Genres
+    genreChart.data.datasets.forEach((dataset, index) => {
+        genreChart.setDatasetVisibility(index, genre === "Alle" || dataset.label === genre);
     });
-
     genreChart.update();
+
+    // 3. nur den passenden Text unter der Grafik zeigen
+    document.querySelectorAll("#genreTexte p").forEach(text => {
+        text.hidden = text.dataset.genre !== genre;
+    });
 }
 
 

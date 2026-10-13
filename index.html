@@ -134,17 +134,21 @@
     <section>
         <h2>Entwicklung der Genres 1967–2025</h2>
         <p class="subtitle">Untertitel zur Entwicklungsgrafik</p>
-        <div class="button-group">
-            <button id="alleAn">Alle an</button>
-            <button id="alleAus">Alle aus</button>
+        <!-- "Alle" steht im HTML, die Genre-Buttons hängt script.js dahinter an -->
+        <div id="genreButtons" class="button-group">
+            <button data-genre="Alle" class="aktiv">Alle</button>
         </div>
-        <!-- Die Genre-Buttons erstellt script.js -->
-        <div id="genreButtons" class="button-group"></div>
         <div class="chart">
             <canvas id="genreVerlauf"></canvas>
         </div>
-        <div class="text-block">
-            <p id="genreText">Platzhalter: Erklärung, wie die Grafik zu lesen ist.</p>
+        <!-- Pro Button ein Text; data-genre muss genau wie der Genre-Name geschrieben sein -->
+        <div id="genreTexte" class="text-block">
+            <p data-genre="Alle">Platzhalter: Erklärung, wie die Grafik zu lesen ist.</p>
+            <p data-genre="Action" hidden>Platzhalter: Was die Daten zu Action zeigen.</p>
+            <p data-genre="Animation" hidden>Platzhalter: Was die Daten zu Animation zeigen.</p>
+            <p data-genre="Horror" hidden>Platzhalter: Was die Daten zu Horror zeigen.</p>
+            <p data-genre="Romance" hidden>Platzhalter: Was die Daten zu Romance zeigen.</p>
+            <p data-genre="Science Fiction" hidden>Platzhalter: Was die Daten zu Science Fiction zeigen.</p>
         </div>
     </section>
 

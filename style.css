@@ -121,7 +121,8 @@ section {
     }
 }
 
-/* Buttons der Grafiken */
+/* Buttons der Grafiken (Jahrzehnte und Genres) im Ticket-Look:
+   innerer Rahmen per box-shadow (Lücke in Beige, dann farbige Linie) */
 .button-group {
     display: flex;
     flex-wrap: wrap;
@@ -129,46 +130,31 @@ section {
     margin-bottom: var(--ga-small);
 
     button {
-        background: none;
-        color: var(--light);
-        border: 0.1px solid var(--accent);
+        /* Aktiv-Farbe: bei Genres die Linienfarbe (--genre-farbe setzt script.js),
+           sonst (Jahrzehnte, "Alle") die Akzentfarbe */
+        --aktiv-farbe: var(--genre-farbe, var(--accent));
+        background-color: var(--block);
+        color: var(--dark);
+        border: none;
+        border-radius: var(--radius);
         padding: var(--ga-small) var(--ga-medium);
-        font: var(--f-subtitle);
+        font: 700 clamp(1rem, 1.5vw, 1.25rem)/1 'Roboto Slab', serif;
+        box-shadow: inset 0 0 0 0.25rem var(--block), inset 0 0 0 0.45rem var(--accent);
         cursor: pointer;
+        /* ausgewählt: Farben umgekehrt */
         &:hover,
         &.aktiv {
-            background-color: var(--accent);
+            background-color: var(--aktiv-farbe);
+            color: var(--block);
+            box-shadow: inset 0 0 0 0.25rem var(--aktiv-farbe), inset 0 0 0 0.45rem var(--block);
         }
     }
-}
-
-/* Jahrzehnt-Buttons im Ticket-Look: innerer Rahmen per box-shadow (Lücke in Beige, dann Akzent-Linie) */
-#jahrzehnte button {
-    background-color: var(--block);
-    color: var(--dark);
-    border: none;
-    border-radius: var(--radius);
-    padding: var(--ga-small) var(--ga-medium);
-    font: 700 clamp(1rem, 1.5vw, 1.25rem)/1 'Roboto Slab', serif;
-    box-shadow: inset 0 0 0 0.25rem var(--block), inset 0 0 0 0.45rem var(--accent);
-    /* aktives Jahrzehnt: Farben umgekehrt */
-    &:hover,
-    &.aktiv {
-        background-color: var(--accent);
-        color: var(--block);
-        box-shadow: inset 0 0 0 0.25rem var(--accent), inset 0 0 0 0.45rem var(--block);
-    }
-}
-
-/* Genre-Buttons in der Farbe ihrer Linie (--genre-farbe setzt script.js) */
-#genreButtons button.aktiv {
-    background-color: var(--genre-farbe);
-    border-color: var(--genre-farbe);
 }
 
 /* Heller Hintergrund, damit Achsen und Beschriftung von Chart.js lesbar sind */
 .chart {
     background-color: var(--light);
+    border-radius: var(--radius);
     padding: var(--ga-small);
 }
 
